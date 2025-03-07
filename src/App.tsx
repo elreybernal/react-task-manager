@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, TextField, Box } from '@mui/material';
+import { Button, TextField, Box, ButtonGroup } from '@mui/material';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import TaskList from './components/TaskList.tsx';
 
@@ -27,6 +27,9 @@ const App: React.FC = () => {
   useEffect(() => {
     if (tasks.length > 0) {
       localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+    else {
+      localStorage.removeItem('tasks');
     }
   }, [tasks]);
 
@@ -79,7 +82,8 @@ const App: React.FC = () => {
 
   return (
     <Router>
-      <Box sx={{ padding: '20px', maxWidth: 400, margin: '0 auto' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px', height:'100vh', width: '100vw', textAlign: 'center' }}>
+        <Box sx={{ width: '100%', maxWidth: '400px', padding: '20px', border: '1px solid #ccc', borderRadius: '5px', marginBottom: 2 }}>
         <h1>Task Manager</h1>
 
         {/* Task input field */}
@@ -98,14 +102,14 @@ const App: React.FC = () => {
           variant="contained"
           color="primary"
           onClick={editingTaskId ? handleSaveEdit : handleAddTask}
-          fullWidth
+          fullWidth sx={{ marginBottom: 2 }}
           data-testid="add-task-button"
         >
           {editingTaskId ? 'Save Edit' : 'Add Task'}
         </Button>
 
-        {/* Navigation Links */}
-        <Box sx={{ marginTop: 2, display: 'flex', justifyContent: 'center', gap: '10px' }}>
+        <ButtonGroup fullWidth sx={{ marginBottom: 2 }}>
+          {/* Navigation Links */}
           <Link to="/" style={{ textDecoration: 'none' }}>
             <Button variant="outlined" data-testid="all-tasks-link">
               All Tasks
@@ -121,7 +125,7 @@ const App: React.FC = () => {
               Completed Tasks
             </Button>
           </Link>
-        </Box>
+        </ButtonGroup>
 
         {/* Routes */}
         <Routes>
@@ -159,6 +163,7 @@ const App: React.FC = () => {
             }
           />
         </Routes>
+        </Box>
       </Box>
     </Router>
   );
